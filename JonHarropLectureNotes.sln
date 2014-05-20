@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{4925A630-B079-445d-BCD4-3A9C94FE9307}") = "JonHarropLectureNotes", "JonHarropLectureNotes\JonHarropLectureNotes.fsproj", "{815523E6-9B14-4046-AA1D-70B3353BCC45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{815523E6-9B14-4046-AA1D-70B3353BCC45}.Debug|x86.ActiveCfg = Debug|x86
+		{815523E6-9B14-4046-AA1D-70B3353BCC45}.Debug|x86.Build.0 = Debug|x86
+		{815523E6-9B14-4046-AA1D-70B3353BCC45}.Release|x86.ActiveCfg = Release|x86
+		{815523E6-9B14-4046-AA1D-70B3353BCC45}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = JonHarropLectureNotes\JonHarropLectureNotes.fsproj
+	EndGlobalSection
+EndGlobal
