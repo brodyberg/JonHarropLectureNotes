@@ -1,4 +1,4 @@
-# Notes from an F# lecture given by Jon Harrop (@jdh30)
+# Notes from an F# lecture given by Jon Harrop [@jdh30](https://github.com/jdh30)
 
 Notes from an F# lecture delivered by Jon Harrop on May 12th and 13th 2014. 
 
