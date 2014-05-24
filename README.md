@@ -2,6 +2,8 @@
 
 Notes from an F# lecture delivered by Jon Harrop on May 12th and 13th 2014. 
 
+Presented [with permission from Jon](https://twitter.com/jonharrop/status/468619936861282304)
+
 ## Synopsis: 
 
 These are notes from a two day lecture on F#. My notes are in the "Notes"
