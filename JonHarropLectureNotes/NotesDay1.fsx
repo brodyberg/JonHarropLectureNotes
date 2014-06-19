@@ -210,8 +210,26 @@ let (|Char|_|) alphabet chars =
     | x::xs when Set.contains x alphabet -> Some(x,xs)
     | _ -> None
 
+// You can't do this: let x = Char alpha 'a'
+// gives: error FS0039: The value or constructor 'Char' is not defined
+
+match ['a'] with 
+| Char alpha c -> Some c
+| _ -> None
+
+// Fails because 8 isn't in the alphabet
+match ['8'] with
+| Char alpha c -> Some c
+| _ -> None
+
 // multiple versions of things here
 match ['H'; 'e'; 'l'; 'l'; 'o';] with 
+| Char alpha c -> Some c
+| _ -> None
+
+// Works because Char isn't going through the entire list
+// so it doesn't directly match against 8
+match ['h'; 'e'; '8'; 'l'; 'o';] with 
 | Char alpha c -> Some c
 | _ -> None
 
