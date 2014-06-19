@@ -166,6 +166,7 @@ let (|Less|Equal|Greater|) c =
     if c < 0 then Less
     elif c=0 then Equal
     else Greater
+// val ( |Less|Equal|Greater| ) : c:int -> Choice<unit,unit,unit>
 
 match compare 3 4 with
 | Less -> "less"
@@ -196,11 +197,12 @@ let alpha = set ['a'..'z'] + set ['A'..'Z']
 let digit = set ['0'..'9']
 let alphanum = alpha + digit
 
-let (|Char|_|) alphabet chars =
-    match chars with
-    | [] -> None
-    | x::xs when Set.contains x alphabet -> Some x
-    | _ -> None
+// This function is elaborated immediately below to return Some(x, xs)
+//let (|Char|_|) alphabet chars =
+//    match chars with
+//    | [] -> None
+//    | x::xs when Set.contains x alphabet -> Some x
+//    | _ -> None
 
 let (|Char|_|) alphabet chars =
     match chars with
@@ -213,7 +215,7 @@ match ['H'; 'e'; 'l'; 'l'; 'o';] with
 | Char alpha c -> Some c
 | _ -> None
 
-// fails because 3 is not in the alphabet
+// fails (returns None) because 3 is not in the alphabet
 match ['3'; 'e'; 'l'; 'l'; 'o';] with 
 | Char alpha c -> Some c
 | _ -> None
@@ -225,7 +227,7 @@ match ['H'; 'e'; 'l'; 'l'; 'o';] with
 
 match ['H'; 'e'; 'l'; 'l'; 'o';] with 
 // call our partial active pattern
-| Char alpha (c0, Char alpha (c1, Char alpha c2)) -> Some(c0, c1, cs)
+| Char alpha (c0, Char alpha (c1, Char alpha (c2, cs))) -> Some(c0, c1, c2, cs)
 | _ -> None
 
 //////
@@ -239,17 +241,14 @@ let rec (|Chars|) alphabet chars =
 match ['H'; 'e'; 'l'; 'l'; 'o'] with 
 | Chars alpha (cs, xs) -> cs, xs
 
-
 List.ofSeq "Hello world!"
 // ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!']
 
 match ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
 | Chars alpha (cs, xs) -> cs, xs
 
-
 // used to create DSL - whole lexing and parsing is about 100 lines of code
 // automates an enormous amount of work for actuaries to go into production
-
 
 let (|Ident|_|) chars = 
     match chars with
