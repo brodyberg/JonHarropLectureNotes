@@ -58,9 +58,9 @@ Seq.fold (+) 0 [1..100]
 // where you want to use map vs. [ for ... do ] when you are doing 
 // operation after operation after operation
 // so pipeline: 
-
-x |> f
-f x
+// 
+// x |> f
+// f x
 
 // list.map is quicker than seq.map
 // but nothing is done immediately
@@ -210,7 +210,7 @@ let (|Char|_|) alphabet chars =
     | x::xs when Set.contains x alphabet -> Some(x,xs)
     | _ -> None
 
-// You can't do this: let x = Char alpha 'a'
+// You can't do: let x = Char alpha 'a'
 // gives: error FS0039: The value or constructor 'Char' is not defined
 
 match ['a'] with 
@@ -262,11 +262,14 @@ match ['H'; 'e'; 'l'; 'l'; 'o'] with
 List.ofSeq "Hello world!"
 // ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!']
 
+match List.ofSeq "Hello world!" with
+| Chars alpha (cs, xs) -> cs, xs
+
 match ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
 | Chars alpha (cs, xs) -> cs, xs
 
-// used to create DSL - whole lexing and parsing is about 100 lines of code
-// automates an enormous amount of work for actuaries to go into production
+// Used to create DSL - whole lexing and parsing is about 100 lines of code
+// Automates an enormous amount of work for actuaries to go into production
 
 let (|Ident|_|) chars = 
     match chars with
@@ -276,11 +279,11 @@ let (|Ident|_|) chars =
 
 match ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
 | Ident (cs, xs) -> Some(cs, xs)
-| -> None
+| _ -> None
 
 match ['H'; 'e'; 'l'; 'l'; 'o'; '1'; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
 | Ident (cs, xs) -> Some(cs, xs)
-| -> None
+| _ -> None
 
 match ['3'; 'e'; 'l'; 'l'; 'o'; '1'; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
 | Ident (cs, xs) -> Some(cs, xs)
