@@ -361,6 +361,10 @@ Vec2_c(3.0, 4.0).Length
 { new System.Object() with
     member x.ToString() = "F#!" }
 
+let oe = { new System.Object() with member x.ToString() = "F#!" }
+printfn "%s" (oe.ToString())
+printfn "%A" oe
+
 // awesome
 do
     use myDisposable =
