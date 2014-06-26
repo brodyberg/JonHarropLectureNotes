@@ -52,10 +52,10 @@ List.map ((+) 1)
 
 List.map ((+) 1) [1..5]
 
-List.map (List.map ((+) 1))
-
 // adds one to each list
 // very succinct
+List.map (List.map ((+) 1))
+
 List.map (List.map ((+) 1)) [[1..3]; [4..6]; [7..9]]
 // aka
 List.map (fun row -> List.map (fun n -> n + 1) row)
@@ -64,6 +64,7 @@ List.map (List.map ((+) 1))
 // above: functional composition and currying starts to pay off bigtime
 
 // visits each and converts to string
+// just like above: Array.init 10 float
 Array.init 10 string
 // note: these are .net arrays so they are mutable!!!
 
@@ -79,12 +80,14 @@ List.init 10 float
 
 let xs = List.init 10 string
 xs.[5]
-xs.[5] <- "hello"
+// Propety 'Item' cannot be set: 
+// xs.[5] <- "hello"
 
 xs
 
 // how to change the fifth element
-List.mapi (fun i x -> if i=5 then "Hello" else x) xs
+// projects list into changed form
+List.mapi (fun i x -> if i = 5 then "Hello" else x) xs
 // if you do this, you need a different datastructure
 // ie. don't use list in this particular case
 
@@ -98,6 +101,7 @@ List.mapi (fun i x -> if i=5 then "Hello" else x) xs
 // datastructures super important in logic programming
 // wait, what's "logic programming"? sounds like work to me
 
+// aka .NET List<int>
 let xs = ResizeArray<int>()
 
 for i in 1..10 do
@@ -111,6 +115,11 @@ Array.create 10 0.0
 // like init but you give it an element and it puts that element in every 
 // point in the array
 
+// A better way to describe 0.0 above is that it is a value that may be
+// computed with any function, and is computed exactly once. The below example
+// with ref demonstrates the value being computed by (ref 0) exactly once. 
+
+// ref refresher
 let x = ref 10
 x:=5
 !x
@@ -137,16 +146,15 @@ xs.[1..]
 xs.[..3]
 
 Array.iter (fun n -> printfn "%A" n) xs
-// eta reduction cancel n
+// eta reduction: cancel n term on both sides to produce: 
 Array.iter (printfn "%A") xs
-// what????
 
 Array.map ((+) 3) xs
 // un-reducing: 
 Array.map (fun x -> x + 3) xs
 
 // can't cancel if function does something with n
-// can cancel if its on both sides and function is waiting for call
+// can cancel if it's on both sides and function is waiting for call
 
 Array.map (fun x -> x < 3) xs
 // hard to read: 
@@ -256,18 +264,23 @@ let cross xs ys : float * float * float =
     // so much wow
 
 // problem: 
-type Person = string
-type Annuitants = Person list // list type can be empty
+type Person_a(name:string) = 
+    member this.Name
+        with get () = name
+type Annuitants_a = Person_a list // list type can be empty
 // so we need runtime checks for empty list :_(
 
+let brody = Person_a "brody" 
+let annuitants = [brody]
+
 // solution: 
-type Person = string
-type Annuitants = Person * Person list // this complete type pair
+type Annuitants_b = Person_a * Person_a list // this complete type pair
 // must always have Person filled in
 // so AT COMPILE TIME we always have at least one person
 
-type Annuitants = Annuitants of Person * list<Person>
-Annuitants(Person "me", [])
+type Annuitants_c = Annuitants_c of Person_a * list<Person_a>
+
+Annuitants_c(Person_a("brody"), [])
 
 List.reduce (+)
 
