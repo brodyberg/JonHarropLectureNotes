@@ -527,29 +527,42 @@ u + v
 2.0 * u
 2.0 * v
 
-// embedded DSL
-// overload plus and multiply etc operators
+//////////////////////////////////////
+// Embedded DSL
+// overload plus and multiply etc. operators
 
-type Expr =
+type Expr_a =
     | Int of int
     | Var of string
-    | Add of Expr * Expr
-    | Mul of Expr * Expr
+    | Add of Expr_a * Expr_a
+    | Sub of Expr_a * Expr_a
+    | Mul of Expr_a * Expr_a
+    | Num of float
 
     static member (+) (f, g) = Add(f, g)
     static member (*) (f, g) = Mul(f, g)
-    static member (-) (f, g) = Mul(f, Mul(Num -1.0, g))
+    static member (-) (f, g) = Add(f, Mul(Num -1.0, g))
 
     // he then goes on to completely rewrite the nestish stuff
     // with symbols
 
-d (f, "x") // complicated
+// Idea: d (f, "x") // complicated
 
-type Expr =
+let expr_a_int = Int(4)
+let expr_a_var = Var("foo")
+let expr_a_add_manual = Add(Int(4), Int(3))
+let expr_a_add_overload = Int(4) + Int(3)
+let expr_a_mul_manual = Mul(Int(3), Num(4.5))
+let expr_a_mul_overload = Int(3) * Num(4.5)
+let expr_a_sub_manual = Sub(Int(4), Int(3))
+let expr_a_sub_overload = Int(4) - Int(3)
+
+type Expr_b =
     | Int of int
     | Var of string
-    | Add of Expr * Expr
-    | Mul of Expr * Expr
+    | Add of Expr_b * Expr_b
+    | Mul of Expr_b * Expr_b
+    | Num of float
 
     static member (+) (f, g) =
         match f, g with
