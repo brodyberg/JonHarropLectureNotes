@@ -417,7 +417,6 @@ type Vec2_e =
 // 2e
 let two_e = { x = 3.0; y = 4.0; }
 two_e.Length
-
 // 2d
 Vec2_d(3.0, 4.0)
 
@@ -432,32 +431,34 @@ type State =
 On.ToInt()
 Off.ToInt()
 
-type Vec3 = 
+type Vec3_a = 
     { mutable x: float
       mutable y: float }
     
+    // Note: get() and set with argument
     member this.Length 
-        with get() = sqrt(this.x*this.x + this.y*this.y)
+        with get() = sqrt(this.x * this.x + this.y * this.y)
         and set length =
             let scale = length / this.Length
             this.x <- scale * this.x
             this.y <- scale * this.y
 
+// This is a Vec3_a rather than a Vec2_e because F# chooses the last
+// structure with the matching features when attempting to new up 
+// a record. 
 let u = { x = 3.0; y = 4.0 }
 
-
 u.Length
-
 u.Length <- 1.0
-
 u
 
-type Vec3 = 
+type Vec3_b = 
     { mutable x: float
       mutable y: float }
     
+    // Note use of and for mutual definition of get/set
     member this.Length 
-        with get() = sqrt(this.x*this.x + this.y*this.y)
+        with get() = sqrt(this.x * this.x + this.y * this.y)
         and set length =
             let scale = length / this.Length
             this.x <- scale * this.x
@@ -465,12 +466,24 @@ type Vec3 =
 
     member this.Item
         with get i =
-            if i=0 then this.x else this.y
-        and set i v =
-            if i=0 then
-                this.x <- v
+            if i = 0 then this.x else this.y
+        and set i value =
+            if i = 0 then
+                this.x <- value
             else
-                this.y <- v
+                this.y <- value
+
+//type Vec3_b =
+//  {mutable x: float;
+//   mutable y: float;}
+//  with
+//    // What does 'float with get' mean?
+//    member Item : i:int -> float with get
+//    // Why is this not: member Length : 
+//    member Length : float
+//    member Item : i:int -> float with set
+//    member Length : float with set
+//  end
 
 let u = { x = 3.0; y = 4.0 }
 
@@ -483,7 +496,7 @@ u
 
 ////////
 
-type Vec3 = 
+type Vec3_c = 
     { mutable x: float
       mutable y: float }
     
