@@ -356,7 +356,7 @@ type Vec2_c(x:float, y:float) =
 Vec2_c(3.0, 4.0).Length
 (Vec2_c(3.0, 4.0)).Length
 
-// object expressions
+// Object Expressions
 
 { new System.Object() with
     member x.ToString() = "F#!" }
@@ -365,6 +365,7 @@ let oe = { new System.Object() with member x.ToString() = "F#!" }
 printfn "%s" (oe.ToString())
 printfn "%A" oe
 
+// Object Expressions continued
 // awesome
 do
     use myDisposable =
@@ -372,25 +373,27 @@ do
             member this.Dispose() = printfn "Disposed" }
     ()
 
+open System.IO
+
 let myByte =
     let path = ""
-    use stream = System.IO.File.OpenRead path
+    use stream = File.OpenRead path
     stream.ReadByte()
 
-seq { use stream = System.IO.File.OpenRead ""
+seq { use stream = File.OpenRead ""
       while true do
         yield stream.ReadByte() }
 
 let readLines file =
-    seq { use stream = System.IO.File.OpenRead ""
-          use reader = System.IO.StreamReader(stream)
+    seq { use stream = File.OpenRead ""
+          use reader = new StreamReader(stream)
           while not reader.EndOfStream do
             yield stream.ReadByte() }
 
 // implemented above, which was typical code pre-.NET 4.0
-System.IO.File.ReadLines
+File.ReadLines
 
-System.IO.Directory.GetFiles(".")
+Directory.GetFiles(".")
 
 ///////////////////////////////////////////////////////
 
