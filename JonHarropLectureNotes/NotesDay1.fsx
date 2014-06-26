@@ -397,18 +397,29 @@ Directory.GetFiles(".")
 
 ///////////////////////////////////////////////////////
 
-
-type Vec2(x:float, y:float) =
+// Explicit constructor 
+// Type of Class
+type Vec2_d(x:float, y:float) =
     member this.X = x
     member this.Y = y
     member this.Length = sqrt(x*x + y*y)
 
-type Vec2 = 
-    { x: float
+// No explicit constructor
+// Type of Record
+type Vec2_e = 
+    { x:float
       y:float}  
-    member this.Length = sqrt(x*x + y*y)
+    // use self-identifier to find x and y
+    member this.Length = sqrt(this.x * this.x + this.y * this.y)
 
+// 2e
 { x = 3.0; y = 4.0; }.Length
+// 2e
+let two_e = { x = 3.0; y = 4.0; }
+two_e.Length
+
+// 2d
+Vec2_d(3.0, 4.0)
 
 type State = 
     | On 
@@ -419,6 +430,7 @@ type State =
         | Off -> 7
 
 On.ToInt()
+Off.ToInt()
 
 type Vec3 = 
     { mutable x: float
