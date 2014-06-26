@@ -641,6 +641,8 @@ Array2D.init 10 10 (fun i j -> i + j)
 
 ////////////////
 // SAME!!!!
+// i.e. for objects that do not implement IDisposable, there's no need
+// for the 'new' keyword
 new System.Uri("http://www.google.com")
 System.Uri("http://www.google.com")
 // crazy!!!
@@ -648,9 +650,11 @@ System.Uri("http://www.google.com")
 // otherwise nothing special about it, shouldn't need to know
 // that it's even an object
 
-let readLines file =
-    seq { use stream = System.IO.File.OpenRead ""
-          use reader = System.IO.StreamReader(stream)
+open System.IO
+
+let readLines_b file =
+    seq { use stream = File.OpenRead ""
+          use reader = new StreamReader(stream)
           while not reader.EndOfStream do
             yield stream.ReadByte() }
 
