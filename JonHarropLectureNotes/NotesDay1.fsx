@@ -658,11 +658,14 @@ let readLines_b file =
           while not reader.EndOfStream do
             yield stream.ReadByte() }
 
+////////////////
+// General discussion
+
 // pattern matching is optimized by the compiler so even if you
 // did implement something in C# it wouldn't be optimized
 
-Seq.iter (printfn "%A") [1..5]
-Seq.iter (printfn "%A") [|1..5|]
+Seq.iter (printfn "%d") [1..5]
+Seq.iter (printfn "%d") [|1..5|]
 // you can't do this in OCAML, this is from .NET 
 
 // Jon's assessment: graph libraries are really bad
@@ -672,7 +675,7 @@ Seq.iter (printfn "%A") [|1..5|]
 // .net can't express abstract algorithms over graph type
 // functor takes class and returns class
 // F# it tends to be that you get a solid collection of algorithms
-// but there's only way to represent your graph (dictionary with hashsets)
+// but there's only one way to represent your graph (dictionary with hashsets)
 // but he wants flexibility
 
 // csharp has its own way of using events
