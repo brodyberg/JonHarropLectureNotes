@@ -561,6 +561,7 @@ type Expr_b =
     | Int of int
     | Var of string
     | Add of Expr_b * Expr_b
+    | Sub of Expr_b * Expr_b
     | Mul of Expr_b * Expr_b
     | Num of float
 
@@ -578,9 +579,21 @@ type Expr_b =
         | f, Num 1.0 -> f
         | f, g -> Mul(f, g)
 
-    static member (-) (f, g) = Mul(f, Mul(Num -1.0, g))
+    // static member (-) (f, g) = Mul(f, Mul(Num -1.0, g))
+    static member (-) (f, g) = f + (g * (Int -1))
+    // Note, this is an error because '-1' doesn't exist in Expr_b: 
+    // static member (-) (f, g) = f + (g * -1)
 
-d (f, "x") // way simpler
+// Idea: d (f, "x") // way simpler
+
+let expr_b_int = Int(4)
+let expr_b_var = Var("foo")
+let expr_b_add_manual = Add(Int(4), Int(3))
+let expr_b_add_overload = Int(4) + Int(3)
+let expr_b_mul_manual = Mul(Int(3), Num(4.5))
+let expr_b_mul_overload = Int(3) * Num(4.5)
+let expr_b_sub_manual = Sub(Int(4), Int(3))
+let expr_b_sub_overload = Int(4) - Int(3)
 
 // and in the nest combinator
 
