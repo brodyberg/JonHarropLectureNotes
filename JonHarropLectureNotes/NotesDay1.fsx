@@ -485,14 +485,14 @@ type Vec3_b =
 //    member Length : float with set
 //  end
 
-let u = { x = 3.0; y = 4.0 }
+let u_a = { x = 3.0; y = 4.0 }
 
-u.[0]
-u.[1]
+u_a.[0]
+u_a.[1]
 
-u.[1] <- -4.0
+u_a.[1] <- -4.0
 
-u
+u_a
 
 ////////
 
@@ -519,12 +519,12 @@ type Vec3_c =
     static member (+) (u, v) = { x = u.x + v.x; y = u.y + v.y }
     static member (*) (s, v) = { x = s * v.x; y = s * v.y }
 
-let u = { x = 3.0; y = 4.0 }
+let u_b = { x = 3.0; y = 4.0 }
 let v = { x = 5.0; y = 9.0 }
 
-u + v
+u_b + v
 
-2.0 * u
+2.0 * u_b
 2.0 * v
 
 //////////////////////////////////////
@@ -595,11 +595,29 @@ let expr_b_mul_overload = Int(3) * Num(4.5)
 let expr_b_sub_manual = Sub(Int(4), Int(3))
 let expr_b_sub_overload = Int(4) - Int(3)
 
-// and in the nest combinator
+// ... and in the nest combinator
 
 let rec nest n f x =
-    if n=0 then x else
+    if n = 0 then x else
         nest (n-1) f (f x)
+// val nest : n:int -> f:('a -> 'a) -> x:'a -> 'a
+// What's the difference between f:('a -> 'a) and x:'a -> 'a
+
+// Examples: 
+nest 3 (~-) 1
+
+// or
+let add x y = x + y
+let addFour = add 4
+
+nest 3 addFour 0
+
+// Example usage of nest wrt Expr_b
+
+let addExpr_b (x:Expr_b) (y:Expr_b) = x + y
+let addFour_b = addExpr_b (Int(4))
+
+nest 3 addFour_b (Int(0))
 
 ////////////////
 
