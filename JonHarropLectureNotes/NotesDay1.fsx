@@ -213,7 +213,18 @@ let (|Char|_|) alphabet chars =
 // You can't do: let x = Char alpha 'a'
 // gives: error FS0039: The value or constructor 'Char' is not defined
 
+// None
+match [] with
+| Char alpha c -> Some c
+| _ -> None
+
+// Match a, but xs will be understandably empty
 match ['a'] with 
+| Char alpha c -> Some c
+| _ -> None
+
+// This will put 'b' in the xs list
+match ['a'; 'b'] with 
 | Char alpha c -> Some c
 | _ -> None
 
@@ -222,18 +233,18 @@ match ['8'] with
 | Char alpha c -> Some c
 | _ -> None
 
-// multiple versions of things here
+// Multiple versions of things here
 match ['H'; 'e'; 'l'; 'l'; 'o';] with 
 | Char alpha c -> Some c
 | _ -> None
 
-// Works because Char isn't going through the entire list
+// Works because |Char|_| isn't going through the entire list
 // so it doesn't directly match against 8
 match ['h'; 'e'; '8'; 'l'; 'o';] with 
 | Char alpha c -> Some c
 | _ -> None
 
-// fails (returns None) because 3 is not in the alphabet
+// Fails (returns None) because 3 is not in the alphabet
 match ['3'; 'e'; 'l'; 'l'; 'o';] with 
 | Char alpha c -> Some c
 | _ -> None
@@ -252,12 +263,25 @@ match ['H'; 'e'; 'l'; 'l'; 'o';] with
 
 let rec (|Chars|) alphabet chars =
     match chars with
-    | Char alphabet (c, Chars alphabet (cs, xs)) -> 
-        (c::cs, xs)
+    | Char alphabet (c, Chars alphabet (cs, xs)) -> (c::cs, xs)
     | xs -> [], xs
 
+// Match alpha characters into cs
 match ['H'; 'e'; 'l'; 'l'; 'o'] with 
 | Chars alpha (cs, xs) -> cs, xs
+
+// Match numbers into xs
+match ['9'; '8'; '1'; '0'; '3'] with 
+| Chars alpha (cs, xs) -> cs, xs
+
+// Match alpha and non-alpha characters into their separate lists
+match ['A'; 'K'; '4'; '7'] with 
+| Chars alpha (cs, xs) -> cs, xs
+
+// But really, the way |Chars| is written, once it fails to match the rest
+// of the content of chars ends up in xs regardless of whether it's alpha, 
+// numeric or otherwise. See below - where a space character causes the 
+// remainder of chars to end up in xs
 
 List.ofSeq "Hello world!"
 // ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!']
@@ -273,8 +297,7 @@ match ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with
 
 let (|Ident|_|) chars = 
     match chars with
-    | Char alpha (c, Chars alphanum (cs, xs)) -> 
-        Some(c::cs, xs)
+    | Char alpha (c, Chars alphanum (cs, xs)) -> Some(c::cs, xs)
     | _ -> None
 
 match ['H'; 'e'; 'l'; 'l'; 'o'; ' '; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with 
@@ -310,25 +333,28 @@ match ['3'; 'e'; 'l'; 'l'; 'o'; '1'; 'w'; 'o'; 'r'; 'l'; 'd'; '!'] with
 
 // OO for real
 
-type Vec2(x:float, y:float) =
+type Vec2_a(x:float, y:float) =
     member this.X = x
     member this.Y = y
 
-(Vec2(3.0, 4.0))
-(Vec2(3.0, 4.0)).X
+Vec2_a(3.0, 4.0)
+(Vec2_a(3.0, 4.0))
+Vec2_a(3.0, 4.0) = (Vec2_a(3.0, 4.0))
+(Vec2_a(3.0, 4.0)).X
 
-type Vec2(x:float, y:float) =
+type Vec2_b(x:float, y:float) =
     member private this.X = x
     member this.Y = y
 
-(Vec2(3.0, 4.0))
+(Vec2_b(3.0, 4.0))
 
-type Vec2(x:float, y:float) =
+type Vec2_c(x:float, y:float) =
     member this.X = x
     member this.Y = y
     member this.Length = sqrt(x*x + y*y)
 
-(Vec2(3.0, 4.0)).Length
+Vec2_c(3.0, 4.0).Length
+(Vec2_c(3.0, 4.0)).Length
 
 // object expressions
 
