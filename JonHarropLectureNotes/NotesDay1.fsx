@@ -501,7 +501,7 @@ type Vec3_c =
       mutable y: float }
     
     member this.Length 
-        with get() = sqrt(this.x*this.x + this.y*this.y)
+        with get() = sqrt(this.x * this.x + this.y * this.y)
         and set length =
             let scale = length / this.Length
             this.x <- scale * this.x
@@ -509,15 +509,15 @@ type Vec3_c =
 
     member this.Item
         with get i =
-            if i=0 then this.x else this.y
+            if i = 0 then this.x else this.y
         and set i v =
-            if i=0 then
+            if i = 0 then
                 this.x <- v
             else
                 this.y <- v
 
     static member (+) (u, v) = { x = u.x + v.x; y = u.y + v.y }
-    static member (*) (s, v) = { x = s * u.x; y = s * u.y }
+    static member (*) (s, v) = { x = s * v.x; y = s * v.y }
 
 let u = { x = 3.0; y = 4.0 }
 let v = { x = 5.0; y = 9.0 }
@@ -525,6 +525,7 @@ let v = { x = 5.0; y = 9.0 }
 u + v
 
 2.0 * u
+2.0 * v
 
 // embedded DSL
 // overload plus and multiply etc operators
